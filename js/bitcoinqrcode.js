@@ -42,6 +42,9 @@ $(function () {
     }
 
     let App = function () {
+        this.MAX_WIDTH = 1024;
+        this.MIN_WIDTH = 64;
+        
         let self = this;
 
         this.type = CURRENCY.Bitcoin;
@@ -88,7 +91,11 @@ $(function () {
         let address = $('#address').val();
         let is_actually_address = $('#is_actually_address').is(':checked');
 
-        let size = Math.max(64, Math.min(600, parseInt($('#size').val())));
+        let size = Math.max(
+            self.MIN_WIDTH,
+            Math.min(
+                self.MAX_WIDTH,
+                parseInt($('#size').val())));
 
         let is_amount = $('#is_amount').is(':checked');
         let is_label = $('#is_label').is(':checked');
