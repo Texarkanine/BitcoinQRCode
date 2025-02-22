@@ -1,9 +1,5 @@
 # BitcoinQRCode
 
-**Warning: Previously were was a bug in this software that didn't geranted new QR-Codes. It just hides and show them.
-It's fixed now. I paying everything back as you can verify in the blockchain. Please verify generated QR-Codes if you
-previously used this software.**
-
 ![Bitcoin QR-Code with logo](example.png)
 
 ## Description
@@ -33,7 +29,6 @@ and more.
 ## Supported currencies
 
 * Bitcoin
-* Litecoin
 
 ## Development
 
@@ -46,7 +41,7 @@ This project is open for pull requests. So feel free to contribute
 
 ## Website
 
-[BitcoinQRCode](https://games647.github.io/BitcoinQRCode)
+[BitcoinQRCode](https://texarkanine.github.io/BitcoinQRCode)
 
 ## How to use
 
