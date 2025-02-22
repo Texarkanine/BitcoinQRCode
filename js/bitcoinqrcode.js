@@ -37,6 +37,10 @@ $(function () {
         }
     }
 
+    function doesSolemnlySwearIsValidBTCAddress() {
+        return $('#is_actually_address').is(':checked');
+    }
+
     let App = function () {
         let self = this;
 
@@ -56,7 +60,7 @@ $(function () {
         this.timer = 0;
 
         //delay the update in order to prevent too many updates for mobile users
-        $('#address, #size, #amount, #label, #msg, #is_amount, #is_label, #is_msg')
+        $('#address, #size, #amount, #label, #msg, #is_amount, #is_label, #is_msg, #is_actually_address')
             .on('change keyup input', function (event) {
                 if (self.timer) {
                     clearTimeout(self.timer);
@@ -82,6 +86,7 @@ $(function () {
         let self = app;
 
         let address = $('#address').val();
+        let is_actually_address = $('#is_actually_address').is(':checked');
 
         let size = Math.max(64, Math.min(600, parseInt($('#size').val())));
 
@@ -112,7 +117,8 @@ $(function () {
             size = parseInt($('#size').attr('placeholder'), 10);
         }
 
-        if ((address !== self.address )
+        if (( address !== self.address )
+            || ( is_actually_address !== self.is_actually_address )
             || ( size && size !== self.size )
             || ( amount && amount !== self.amount )
             || ( label && label !== self.label )
@@ -122,11 +128,17 @@ $(function () {
             || ( is_msg !== self.is_msg )
         ) {
             
+            const warningBox = $('#address_warning');
             if( ! isProbablyValidBTCAddress(address) ) {
-                $('#address_warning').show();
+                if( warningBox.is(':hidden')  ) {
+                    $('#address_warning').show();
+                }
             } else {
+                $('#is_actually_address').prop('checked', false);
                 $('#address_warning').hide();
             }
+
+            self.is_actually_address = is_actually_address;
             
             self.is_amount = is_amount;
             self.is_label = is_label;
@@ -147,7 +159,11 @@ $(function () {
     App.prototype.draw = function () {
         let self = this;
 
-        let text = this.type.prefix + ':' + this.address;
+        let text = this.address;
+        if( isProbablyValidBTCAddress(this.address) || doesSolemnlySwearIsValidBTCAddress() ) {
+            text = this.type.prefix + ':' + this.address;
+        }
+
         if (this.is_amount) {
             text += '?amount=' + this.amount;
         }

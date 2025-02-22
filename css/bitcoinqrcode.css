@@ -83,3 +83,7 @@ form input[type="radio"] {
     font-weight: bold;
     margin-bottom: 5px;
 }
+
+.warning input[type="checkbox"] {
+    margin: 0;
+}
