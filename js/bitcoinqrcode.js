@@ -19,6 +19,24 @@ $(function () {
         }
     };
 
+    function isProbablyValidBTCAddress(address) {
+        if (address.startsWith('1') ) {
+            const btcAddressRegex = /^1[a-zA-Z0-9]{25,33}$/;
+            return btcAddressRegex.test(address);
+        } else if (address.startsWith('1') || address.startsWith('3')) {
+            const btcAddressRegex = /^3[a-zA-Z0-9]{33}$/;
+            return btcAddressRegex.test(address);
+        } else if (address.startsWith('bc1')) {
+            const btcAddressRegex = /^bc1[a-zA-Z0-9]{39,59}$/;
+            return btcAddressRegex.test(address);
+        } else if (address.startsWith('PM8T')) {
+            const btcAddressRegex = /^(PM8T)[a-zA-Z0-9]{112}$/;
+            return btcAddressRegex.test(address);
+        } else {
+            return false;
+        }
+    }
+
     let App = function () {
         let self = this;
 
@@ -94,7 +112,7 @@ $(function () {
             size = parseInt($('#size').attr('placeholder'), 10);
         }
 
-        if (( address.length >= 27 && address.length <= 34 && address !== self.address )
+        if ((address !== self.address )
             || ( size && size !== self.size )
             || ( amount && amount !== self.amount )
             || ( label && label !== self.label )
@@ -103,6 +121,13 @@ $(function () {
             || ( is_label !== self.is_label )
             || ( is_msg !== self.is_msg )
         ) {
+            
+            if( ! isProbablyValidBTCAddress(address) ) {
+                $('#address_warning').show();
+            } else {
+                $('#address_warning').hide();
+            }
+            
             self.is_amount = is_amount;
             self.is_label = is_label;
             self.is_msg = is_msg;
