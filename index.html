@@ -8,8 +8,8 @@
     <title>Bitcoin QR Code Generator</title>
 
     <meta name="description"
-          content="Generates multiple QR codes for Bitcoin and Litecoin receiving addresses with optional options for label, amount and message">
-    <meta name="keywords" content="bitcoin, litecoin, qr, generator, tool, github, open-source">
+          content="Generates multiple QR codes for Bitcoin receiving addresses with optional options for label, amount and message">
+    <meta name="keywords" content="bitcoin, qr, generator, tool, github, open-source">
 
     <meta name=viewport content="width=device-width, initial-scale=1">
 
@@ -18,7 +18,7 @@
     <!-- Opengraph for Twitter, Facebook -->
     <meta property="og:title" content="Bitcoin QR Code Generator"/>
     <meta property="og:description"
-          content="Generates multiple QR codes for Bitcoin and Litecoin receiving addresses with optional options for label, amount and message"/>
+          content="Generates multiple QR codes for Bitcoin receiving addresses with optional options for label, amount and message"/>
     <meta property="og:image" content="https://games647.github.io/BitcoinQRCode/favicon.ico"/>
     <meta property="og:url" content="https://games647.github.io/BitcoinQRCode"/>
     <meta property="og:type" content="website"/>
@@ -42,11 +42,10 @@
         <p>Right click on the images below to copy it to clipboard or save it to disk.
             Find out more about
             <a href="https://bitcoin.org/">Bitcoin</a>
-            or
-            <a href="https://litecoin.org/">Litecoin</a>.
         </p>
 
         <form method="post">
+            <input name="type" type="hidden" value="Bitcoin" />
             <div class="row">
                 <div class="large-6 columns">
                     <label for="address">Bitcoin address:</label>
@@ -77,13 +76,6 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="large-3 columns">
-                    <label>Currency type:</label>
-
-                    <input class="currency" type="radio" name="type" value="Bitcoin" checked="true">Bitcoin</input>
-                    <input class="currency" type="radio" name="type" value="Litecoin">Litecoin</input>
-                </div>
             </div>
 
             <div id="adv" class="slide hidden togglee">
@@ -103,10 +95,10 @@
                             </div>
                             <div class="small-4 large-2 columns">
                                 <select id="amount-factor" class="postfix">
-                                    <option value="BTC">BTC / LTC</option>
-                                    <option value="mBTC">mBTC / mLTC</option>
-                                    <option value="μBTC">&#181;BTC / &#181;LTC</option>
-                                    <option value="Satoshi">Sat / Lit</option>
+                                    <option value="BTC">BTC</option>
+                                    <option value="mBTC">mBTC</option>
+                                    <option value="μBTC">&#181;BTC</option>
+                                    <option value="Satoshi">Sat</option>
                                 </select>
                             </div>
                             <div class="small-1 large-1 columns">
