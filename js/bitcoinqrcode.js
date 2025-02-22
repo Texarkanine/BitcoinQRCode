@@ -16,15 +16,6 @@ $(function () {
                 'bitcoin-logo.png',
                 'bitcoin-8bit.png'
             ]
-        },
-        Litecoin: {
-            name: "Litecoin",
-            prefix: "litecoin",
-            units: ["LTC", "mLTC", "µLTC", "Litoshi"],
-            overlays: [
-                'pixel.png',
-                'litecoin-coin.png'
-            ]
         }
     };
 
@@ -39,7 +30,7 @@ $(function () {
         this.is_amount = false;
         this.is_label = false;
         this.is_msg = false;
-        this.amount = 0; //this is always in BTC or LTC
+        this.amount = 0; //this is always in BTC
         this.amount_factor = $('#amount-factor').find('option:selected').val();
         this.label = '';
         this.msg = '';
@@ -55,15 +46,6 @@ $(function () {
 
                 self.timer = setTimeout(self.update, 200);
             }).trigger('change');
-
-        //currency changed
-        $('.currency').click(function () {
-            $('#qrcode, #qrcodes').empty();
-
-            let index = $('.currency:checked').val();
-            self.type = CURRENCY[index];
-            self.draw();
-        });
 
         //currency unit changed
         $('#amount-factor').change(function () {
