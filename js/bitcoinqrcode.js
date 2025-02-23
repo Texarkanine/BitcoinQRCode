@@ -222,11 +222,11 @@ $(function () {
             (function () {
                 let image = new Image();
                 image.src = 'img/' + overlay;
-
                 $(image).on('load', function () {
-                    let wrap = $('<div>');
 
                     context.drawImage(image, offset, offset, size, size);
+
+                    let wrap = $('<div>');
 
                     $(canvas)
                         .appendTo(wrap)
@@ -235,6 +235,17 @@ $(function () {
                     wrap.appendTo('#qrcodes');
                 });
             }());
+
+            // download on click
+            $(canvas).click(function () {
+                var a = document.createElement('a');
+                a.href = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+                a.download = "bitcoin-qrcode.png";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            });
+            
         });
     };
 
