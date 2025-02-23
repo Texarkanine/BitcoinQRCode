@@ -6,8 +6,8 @@ $(function () {
             name: "Bitcoin",
             prefix: "bitcoin",
             units: ["BTC", "mBTC", "µBTC", "Satoshi"],
-            overlays: [
-                'pixel.png',
+            overlays: embeddedImages ? Object.keys(embeddedImages) : [
+                'bitcoin-pixel.png',
                 'bitcoin-icon.png',
                 'bitcoin-coin.png',
                 'bitcoin-coin2.png',
@@ -221,7 +221,11 @@ $(function () {
             //draw the overlays
             (function () {
                 let image = new Image();
-                image.src = 'img/' + overlay;
+                if( embeddedImages ) {
+                    image.src = embeddedImages[overlay];
+                } else {
+                    image.src = 'img/' + overlay;
+                }
                 $(image).on('load', function () {
 
                     context.drawImage(image, offset, offset, size, size);
