@@ -37,8 +37,8 @@ $(function () {
         }
     }
 
-    function doesSolemnlySwearIsValidBTCAddress() {
-        return $('#is_actually_address').is(':checked');
+    function shouldUseBitcoinPrefix() {
+        return $('#use_bitcoin_prefix').is(':checked');
     }
 
     let App = function () {
@@ -62,14 +62,27 @@ $(function () {
 
         this.timer = 0;
 
+        this.should_use_bitcoin_prefix = false;
+
         //delay the update in order to prevent too many updates for mobile users
-        $('#address, #size, #amount, #label, #msg, #is_amount, #is_label, #is_msg, #is_actually_address')
-            .on('change keyup input', function (event) {
+        $('#address, #size, #amount, #label, #msg, #is_amount, #is_label, #is_msg, input[name="use_bitcoin_prefix"]')
+            .change(function (event) {
+                console.log("need to redraw in 200ms...");
                 if (self.timer) {
                     clearTimeout(self.timer);
                 }
 
-                self.timer = setTimeout(self.update, 200);
+                self.timer = setTimeout(self.update, 200, event);
+            });
+        
+        $('#address, #size, #amount, #label, #msg')
+            .on('keyup input', function (event) {
+                console.log("need to redraw in 200ms...");
+                if (self.timer) {
+                    clearTimeout(self.timer);
+                }
+
+                self.timer = setTimeout(self.update, 200, event);
             }).trigger('change');
 
         //currency unit changed
@@ -83,13 +96,19 @@ $(function () {
 
             self.amount_factor = new_type;
         });
+
+        // keep checkboxes in sync
+        $('input[name="use_bitcoin_prefix"]').change(function (event) {
+            console.log("Synching all prefix checkboxes to " + $(event.target).is(':checked'));
+            $('input[name="use_bitcoin_prefix"]').not(event.target).prop('checked', $(event.target).is(':checked'));
+        });
     };
 
-    App.prototype.update = function () {
+    App.prototype.update = function (event) {
         let self = app;
 
         let address = $('#address').val();
-        let is_actually_address = $('#is_actually_address').is(':checked');
+        let should_use_bitcoin_prefix = shouldUseBitcoinPrefix();
 
         let size = Math.max(
             self.MIN_WIDTH,
@@ -125,7 +144,7 @@ $(function () {
         }
 
         if (( address !== self.address )
-            || ( is_actually_address !== self.is_actually_address )
+            || ( should_use_bitcoin_prefix !== self.should_use_bitcoin_prefix )
             || ( size && size !== self.size )
             || ( amount && amount !== self.amount )
             || ( label && label !== self.label )
@@ -134,18 +153,27 @@ $(function () {
             || ( is_label !== self.is_label )
             || ( is_msg !== self.is_msg )
         ) {
-            
-            const warningBox = $('#address_warning');
-            if( ! isProbablyValidBTCAddress(address) ) {
-                if( warningBox.is(':hidden')  ) {
-                    $('#address_warning').show();
+
+            if( address !== self.address) {
+                // Warn if it's not a recognized as a valid BTC address.
+                const warningBox = $('#address_warning');
+                const prefixCheckboxes = $('input[name="use_bitcoin_prefix"]');
+                if( ! isProbablyValidBTCAddress(address) ) {
+                    // not recognized as a Bitcoin address
+                    if( warningBox.is(':hidden')  ) {
+                        $('#address_warning').show();
+                        $('input[name="use_bitcoin_prefix"]').prop('checked', false);
+                    }
+                } else {
+                    // recognized as a Bitcoin address
+                    $('#address_warning').hide();
+                    $('input[name="use_bitcoin_prefix"]').prop('checked', true);
                 }
-            } else {
-                $('#is_actually_address').prop('checked', false);
-                $('#address_warning').hide();
+
+                should_use_bitcoin_prefix = shouldUseBitcoinPrefix();
             }
 
-            self.is_actually_address = is_actually_address;
+            self.should_use_bitcoin_prefix = should_use_bitcoin_prefix;
             
             self.is_amount = is_amount;
             self.is_label = is_label;
@@ -167,7 +195,7 @@ $(function () {
         let self = this;
 
         let text = this.address;
-        if( isProbablyValidBTCAddress(this.address) || doesSolemnlySwearIsValidBTCAddress() ) {
+        if( shouldUseBitcoinPrefix() ) {
             text = this.type.prefix + ':' + this.address;
         }
 

@@ -64,7 +64,7 @@
                     <div id="address_warning" class="warning">
                         <b>WARNING: </b> That doesn't look like <a href="https://en.bitcoin.it/wiki/List_of_address_prefixes" target="_blank">a valid Bitcoin address</a>.
                         <br><br>
-                        <input id="is_actually_address" type="checkbox" /><label for="is_actually_address">I know what I'm doing; that really is an address.</label>
+                        <input id="is_actually_address" name="use_bitcoin_prefix" type="checkbox" /><label for="is_actually_address">I know what I'm doing; that really is an address.</label>
                     </div>
                 </div>
 
@@ -179,6 +179,7 @@
                 </div>
                 <div class="small-12 medium-11 columns">
                     <input id="camera" type="text" readonly="readonly"/>
+                    <input name="use_bitcoin_prefix" id="use_bitcoin_prefix" type="checkbox" /><label for="use_bitcoin_prefix">use <code>bitcoin:</code> prefix</label>
                 </div>
             </div>
         </div>
